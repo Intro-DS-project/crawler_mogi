@@ -32,13 +32,13 @@ class MogiSpider(scrapy.Spider):
         item["ward"] = address[1].strip()
         item["district"] = address[2].strip()
 
-        # Giá: 3 triệu 800 nghìn
+        # Giá
         price_str = response.css("div.price:nth-child(3)::text").get()
         item["price"] = price_conversion(price_str)
 
         # Diện tích:  20 m2
         area_str = response.css("div.info-attr:nth-child(1) > span:nth-child(2)::text").get()
-        item["area"] = int(area_str.split()[0])
+        item["area"] = float(area_str.split()[0])
 
         # Ngày đăng: 05/04/2024
         post_date_str = response.css("div.info-attr:nth-child(3) > span:nth-child(2)::text").get()
