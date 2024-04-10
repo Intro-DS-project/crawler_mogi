@@ -2,7 +2,7 @@ import scrapy
 from scrapy.exceptions import CloseSpider
 
 from crawler_mogi.items import RoomItem
-from crawler_mogi.utils import price_conversion, date_conversion
+from crawler_mogi.utils import address_conversion, price_conversion, date_conversion
 
 
 class MogiSpider(scrapy.Spider):
@@ -27,12 +27,9 @@ class MogiSpider(scrapy.Spider):
 
         # Địa chỉ: Võ Chí Công, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội
         address = response.css(".address::text").get()
-        address = address.split(",")
-        item["street"] = address[0].strip()
-        item["ward"] = address[1].strip()
-        item["district"] = address[2].strip()
+        (item["street"], item["ward"], item["district"]) = address_conversion(address)
 
-        # Giá
+        # Giá: 3 triệu 800 nghìn
         price_str = response.css("div.price:nth-child(3)::text").get()
         item["price"] = price_conversion(price_str)
 

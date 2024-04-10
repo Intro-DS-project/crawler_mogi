@@ -1,5 +1,22 @@
 from datetime import datetime
 
+def address_conversion(address_str):
+
+    def clean(str, pat):
+        res = str
+        for p in pat:
+            if p in str:
+                res = str.split(p)[-1]
+                break
+        return res.lstrip('0123456789/ ')
+
+    address_parts = address_str.split(",")
+    street = clean(address_parts[-4], ["Phố", "Đường", "phố", "đường", "Ngõ", "ngõ", "Ngách", "ngách"])
+    ward = clean(address_parts[-3], ["Phường", "Xã", "phường", "xã",])
+    district = clean(address_parts[-2], ["Quận", "Huyện", "quận", "huyện"])
+
+    return street, ward, district
+
 
 def price_conversion(price_str):
     # price_in_str = "3 triệu 800 nghìn" -> 3.8
