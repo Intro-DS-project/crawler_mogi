@@ -6,11 +6,13 @@ from hanoikovoidcdau import standardize
 from crawler_mogi.items import RoomItem
 from crawler_mogi.utils import price_convert
 from crawler_mogi.gemini import extract_description, extract_location
+from crawler_mogi.remote_db import init
 
 
 class MogiSpider(scrapy.Spider):
     name = "mogi"
     stop = False
+    supabase = init()
 
     def start_requests(self):
         i = 1
@@ -65,4 +67,5 @@ class MogiSpider(scrapy.Spider):
         (item["num_bedroom"], item["num_diningroom"], item["num_kitchen"], item["num_toilet"], item["num_floor"],
          item["current_floor"], item["direction"], item["street_width"], *_) = fields_int
 
+        self.supabase.table("entries").insert(item.to_dict()).execute()
         yield item
