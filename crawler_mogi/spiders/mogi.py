@@ -1,6 +1,7 @@
 import scrapy
 from scrapy.exceptions import CloseSpider
 from datetime import datetime
+from hanoikovoidcdau import standardize
 
 from crawler_mogi.items import RoomItem
 from crawler_mogi.utils import price_convert
@@ -48,6 +49,9 @@ class MogiSpider(scrapy.Spider):
         # Địa chỉ
         address = response.css(".address::text").get()
         (item["street"], item["ward"], item["district"], *_) = extract_location(address).split(',')
+        item["street"] = standardize.standardize_street_name(item["street"])
+        item["ward"] = standardize.standardize_ward_name(item["ward"])
+        item["district"] = standardize.standardize_district_name(item["district"])
 
         # Dùng mô tả điền các trường còn lại
         desc_str = response.css(".info-content-body::text").getall()
