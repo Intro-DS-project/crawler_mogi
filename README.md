@@ -13,3 +13,9 @@ in root directory of project
 ```bash
 scrapy crawl mogi -o output.json
 ```
+
+or use Docker
+```bash
+docker build -t mogi .
+docker run --name mogi_c1 mogi
+```
